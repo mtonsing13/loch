@@ -35,19 +35,19 @@ export default function MoodCheckIn({ tokens }: { tokens: AuthTokens }) {
   }
 
   return (
-    <div style={{ maxWidth: 500, margin: '0 auto', fontFamily: 'sans-serif' }}>
-      <h3 style={{ marginBottom: 16 }}>How are you feeling today?</h3>
+    <div className="bg-blush rounded-2xl p-6 mb-6">
+      <h3 className="text-sage text-xl font-bold mb-4">How are you feeling today?</h3>
 
       {/* Emoji selector */}
-      <div style={{ display: 'flex', gap: 12, marginBottom: 16 }}>
+      <div className="flex gap-3 mb-4">
         {EMOJIS.map((emoji, i) => (
           <button
             key={i}
             onClick={() => setSelected(i + 1)}
             style={{
               fontSize: 32,
-              background: selected === i + 1 ? '#f0fdf4' : 'white',
-              border: selected === i + 1 ? '2px solid #4ade80' : '2px solid #eee',
+              background: selected === i + 1 ? '#AACC96' : 'transparent',
+              border: selected === i + 1 ? '2px solid #AACC96' : '2px solid #AACC9640',
               borderRadius: 12,
               padding: '8px 12px',
               cursor: 'pointer',
@@ -64,7 +64,7 @@ export default function MoodCheckIn({ tokens }: { tokens: AuthTokens }) {
         placeholder="Add a note (optional)..."
         value={note}
         onChange={e => setNote(e.target.value)}
-        style={{ width: '100%', padding: 10, fontSize: 14, borderRadius: 8, border: '1px solid #eee', marginBottom: 12, resize: 'none', height: 80 }}
+        className="w-full bg-forest text-white placeholder-gray-400 rounded-lg px-4 py-3 mb-4 outline-none border border-sage resize-none h-20"
       />
 
       {/* Submit button */}
@@ -74,25 +74,25 @@ export default function MoodCheckIn({ tokens }: { tokens: AuthTokens }) {
         style={{
           width: '100%',
           padding: 12,
-          background: selected !== null ? '#4ade80' : '#eee',
+          background: selected !== null ? '#AACC96' : '#25533f',
           border: 'none',
           borderRadius: 8,
           fontSize: 15,
-          cursor: selected !== null ? 'pointer' : 'not-allowed',
+          color: selected !== null ? '#25533f' :'#AACC96',
           marginBottom: 24
         }}>
         Log Mood
       </button>
 
       {/* Last 7 moods */}
-      <h3 style={{ marginBottom: 12 }}>Recent Moods</h3>
-      {moods.length === 0 && <p style={{ color: '#aaa' }}>No moods logged yet!</p>}
+      <h3 className="text-sage font-bold text-lg mb-3">Recent Moods</h3>
+      {moods.length === 0 && <p style={{ color: '#AACC96' }}>No moods logged yet!</p>}
       {moods.map(mood => (
-        <div key={mood.id} style={{ display: 'flex', alignItems: 'center', gap: 12, padding: '10px 0', borderBottom: '1px solid #eee' }}>
-          <span style={{ fontSize: 24 }}>{EMOJIS[mood.score - 1]}</span>
+        <div key={mood.id} className="flex items-center gap-3 py-3 border-b border-sage/20">
+          <span className="text-white text-3xl font-bold">{EMOJIS[mood.score - 1]}</span>
           <div>
-            <p style={{ fontSize: 13, color: '#888', margin: 0 }}>{new Date(mood.created_at).toLocaleDateString()}</p>
-            {mood.note && <p style={{ fontSize: 13, margin: 0 }}>{mood.note}</p>}
+            <p className="text-sage text-sm">{new Date(mood.created_at).toLocaleDateString()}</p>
+            {mood.note && <p className="text-white text-sm">{mood.note}</p>}
           </div>
         </div>
       ))}

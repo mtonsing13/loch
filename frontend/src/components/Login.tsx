@@ -11,34 +11,38 @@ export default function Login({ onSwitch, onLogin, error }: Props) {
   const [password, setPassword] = useState('')
 
   return (
-    <div style={{ maxWidth: 400, margin: '80px auto', fontFamily: 'sans-serif' }}>
-      <h2>Welcome back</h2>
-      <p style={{ color: '#888', marginBottom: 24 }}>Log in to track your mood</p>
+    <div className="min-h-screen bg-forest flex items-center justify-center">
+      <div className="bg-sage p-8 rounded-2xl w-full max-w-md shadow-2xl">
+        <h2 className="text-white text-2xl font-bold mb-2">Welcome back</h2>
+        <p className="text-forest text-sm mb-8">Log in to track your mood</p>
 
-      {error && <p style={{ color: 'red', marginBottom: 12 }}>{error}</p>}
+        {error && <p className="text-red-400 text-sm mb-4">{error}</p>}
 
-      <input
-        placeholder="Username"
-        value={username}
-        onChange={e => setUsername(e.target.value)}
-        style={{ display: 'block', width: '100%', padding: '10px', marginBottom: 12, fontSize: 14 }}
-      />
-      <input
-        placeholder="Password"
-        type="password"
-        value={password}
-        onChange={e => setPassword(e.target.value)}
-        style={{ display: 'block', width: '100%', padding: '10px', marginBottom: 16, fontSize: 14 }}
-      />
-      <button
-        onClick={() => onLogin(username, password)}
-        style={{ width: '100%', padding: '12px', background: '#38bdf8', border: 'none', borderRadius: 6, fontSize: 15, cursor: 'pointer' }}>
-        Login
-      </button>
-      <p style={{ textAlign: 'center', marginTop: 16, fontSize: 13, color: '#888' }}>
-        Don't have an account?{' '}
-        <span onClick={onSwitch} style={{ color: '#4ade80', cursor: 'pointer' }}>Register</span>
-      </p>
+        <input
+          placeholder="Username"
+          value={username}
+          onChange={e => setUsername(e.target.value)}
+          className="w-full bg-blush text-white placeholder-slate-400 rounded-lg px-4 py-3 mb-3 outline-none focus:ring-2 focus:ring-teal-500"
+        />
+        <input
+          placeholder="Password"
+          type="password"
+          value={password}
+          onChange={e => setPassword(e.target.value)}
+          className="w-full bg-blush text-white placeholder-slate-400 rounded-lg px-4 py-3 mb-6 outline-none focus:ring-2 focus:ring-teal-500"
+        />
+        <button
+          onClick={() => onLogin(username, password)}
+          className="w-full bg-forest hover:bg-blush text-white font-semibold py-3 rounded-lg transition-colors">
+          Login
+        </button>
+        <p className="text-center text-forest text-sm mt-4">
+          Don't have an account?{' '}
+          <span onClick={onSwitch} className="text-forest-400 cursor-pointer hover:text-blush">
+            Register
+          </span>
+        </p>
+      </div>
     </div>
   )
 }
