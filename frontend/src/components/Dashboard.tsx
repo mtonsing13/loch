@@ -1,5 +1,6 @@
 import { AuthTokens } from '../types'
 import MoodCheckIn from './MoodCheckIn'
+import StreakCard from './StreakCard'
 //protected home page 
 export default function Dashboard({ tokens, onLogout }: { tokens: AuthTokens, onLogout: () => void }) {
   return (
@@ -12,6 +13,7 @@ export default function Dashboard({ tokens, onLogout }: { tokens: AuthTokens, on
           Logout
         </button>
       </div>
+      <StreakCard tokens={tokens} />
       <MoodCheckIn tokens={tokens} />
     </div>
   )

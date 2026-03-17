@@ -15,3 +15,9 @@ export interface MoodEntry {
   note: string
   created_at: string
 }
+
+export interface UserProfile {
+  current_streak:number
+  longest_streak:number
+  last_checkin_date: string
+}

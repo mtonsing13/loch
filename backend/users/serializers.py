@@ -1,5 +1,6 @@
 from django.contrib.auth.models import User
 from rest_framework import serializers
+from .models import UserProfile
 #converts user data to JSON
 class RegisterSerializer(serializers.ModelSerializer):
     password = serializers.CharField(write_only=True)
@@ -17,3 +18,8 @@ class RegisterSerializer(serializers.ModelSerializer):
             email=validated_data.get('email', '')
         )
         return user
+    
+class UserProfileSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = UserProfile
+        fields = ['current_streak', 'longest_streak', 'last_checkin_date']
