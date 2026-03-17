@@ -1,6 +1,7 @@
 import { AuthTokens } from '../types'
 import MoodCheckIn from './MoodCheckIn'
 import StreakCard from './StreakCard'
+import MeditationTimer from './MeditationTimer'
 //protected home page 
 export default function Dashboard({ tokens, onLogout }: { tokens: AuthTokens, onLogout: () => void }) {
   return (
@@ -10,7 +11,7 @@ export default function Dashboard({ tokens, onLogout }: { tokens: AuthTokens, on
       <h2 className="text-white text-xl font-bold">Loch 🌊</h2>
       <button
         onClick={onLogout}
-        className="bg-blush-500 hover:bg-blush-400 text-white font-semibold px-4 py-2 rounded-lg transition-colors">
+        className="bg-blush hover:bg-forest text-white font-semibold px-4 py-2 rounded-lg transition-colors">
         Logout
       </button>
     </nav>
@@ -19,6 +20,7 @@ export default function Dashboard({ tokens, onLogout }: { tokens: AuthTokens, on
     <div className="max-w-2xl mx-auto px-6 pt-24">
       <StreakCard tokens={tokens} />
       <MoodCheckIn tokens={tokens} />
+      <MeditationTimer tokens={tokens} />
     </div>
   </div>
 )
