@@ -3,7 +3,7 @@ import { AuthTokens } from '../types'
 
 
 export default function MeditationTimer({ tokens }: { tokens: AuthTokens }) {
-    const PRESETS = [5, 10, 15, 20]
+    const PRESETS = [1, 2, 3, 5]
 
     const [duration, setDuration] = useState<number>(5 * 60) // seconds
     const [timeLeft, setTimeLeft] = useState<number>(5 * 60)
@@ -20,6 +20,7 @@ export default function MeditationTimer({ tokens }: { tokens: AuthTokens }) {
         } else if (timeLeft === 0) {
             setIsRunning(false)
             setCompleted(true)
+            playCompletionSound()
         }
         // cleanup 
         // 
@@ -43,6 +44,30 @@ export default function MeditationTimer({ tokens }: { tokens: AuthTokens }) {
             const s = seconds % 60
             return `${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`
         }
+        //sound 
+        const playCompletionSound = () => {
+          const audioCtx = new AudioContext()
+          // create a gentle bell tone
+          const oscillator = audioCtx.createOscillator()
+          const gainNode = audioCtx.createGain()
+          oscillator.connect(gainNode)
+          gainNode.connect(audioCtx.destination)
+  
+          oscillator.type = 'sine'        // smooth sine wave = gentle sound
+          oscillator.frequency.value = 528 // 528hz = calming frequency
+  
+          // fade in then fade out gently
+          gainNode.gain.setValueAtTime(0, audioCtx.currentTime)
+          gainNode.gain.linearRampToValueAtTime(0.3, audioCtx.currentTime + 0.5)
+          gainNode.gain.linearRampToValueAtTime(0, audioCtx.currentTime + 3)
+  
+          oscillator.start(audioCtx.currentTime)
+          oscillator.stop(audioCtx.currentTime + 3)
+        }
+
+
+
+
     // SVG ring calculations
 const radius = 80
 const circumference = 2 * Math.PI * radius
