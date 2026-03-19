@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from 'react'
 import { AuthTokens } from '../types'
+import axios from 'axios'
 
 
 export default function MeditationTimer({ tokens }: { tokens: AuthTokens }) {
@@ -9,8 +10,42 @@ export default function MeditationTimer({ tokens }: { tokens: AuthTokens }) {
     const [timeLeft, setTimeLeft] = useState<number>(5 * 60)
     const [isRunning, setIsRunning] = useState<boolean>(false)
     const [completed, setCompleted] = useState<boolean>(false)
+
+    const headers = { Authorization: `Bearer ${tokens.access}` }
     //countdown logic
     const intervalRef = useRef<NodeJS.Timeout | null>(null)
+    //sound 
+    const playCompletionSound = () => {
+      const audioCtx = new AudioContext()
+      // create a gentle bell tone
+      const oscillator = audioCtx.createOscillator()
+      const gainNode = audioCtx.createGain()
+      oscillator.connect(gainNode)
+      gainNode.connect(audioCtx.destination)
+  
+      oscillator.type = 'sine'        // smooth sine wave = gentle sound
+      oscillator.frequency.value = 528 // 528hz = calming frequency
+  
+          // fade in then fade out gently
+      gainNode.gain.setValueAtTime(0, audioCtx.currentTime)
+      gainNode.gain.linearRampToValueAtTime(0.3, audioCtx.currentTime + 0.5)
+      gainNode.gain.linearRampToValueAtTime(0, audioCtx.currentTime + 3)
+  
+      oscillator.start(audioCtx.currentTime)
+      oscillator.stop(audioCtx.currentTime + 3)
+    }
+        //
+    const saveSession = async () => {
+      try {
+        await axios.post('http://127.0.0.1:8000/api/sessions/',
+          { duration_minutes: duration / 60 },
+          {headers}
+        )
+      }
+      catch (err) {
+        console.error(err)
+      }
+    }
 
     useEffect(() => {
         if (isRunning && timeLeft > 0) {
@@ -21,6 +56,7 @@ export default function MeditationTimer({ tokens }: { tokens: AuthTokens }) {
             setIsRunning(false)
             setCompleted(true)
             playCompletionSound()
+            saveSession()
         }
         // cleanup 
         // 
@@ -43,26 +79,6 @@ export default function MeditationTimer({ tokens }: { tokens: AuthTokens }) {
             const m = Math.floor(seconds / 60)
             const s = seconds % 60
             return `${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`
-        }
-        //sound 
-        const playCompletionSound = () => {
-          const audioCtx = new AudioContext()
-          // create a gentle bell tone
-          const oscillator = audioCtx.createOscillator()
-          const gainNode = audioCtx.createGain()
-          oscillator.connect(gainNode)
-          gainNode.connect(audioCtx.destination)
-  
-          oscillator.type = 'sine'        // smooth sine wave = gentle sound
-          oscillator.frequency.value = 528 // 528hz = calming frequency
-  
-          // fade in then fade out gently
-          gainNode.gain.setValueAtTime(0, audioCtx.currentTime)
-          gainNode.gain.linearRampToValueAtTime(0.3, audioCtx.currentTime + 0.5)
-          gainNode.gain.linearRampToValueAtTime(0, audioCtx.currentTime + 3)
-  
-          oscillator.start(audioCtx.currentTime)
-          oscillator.stop(audioCtx.currentTime + 3)
         }
 
 
