@@ -8,7 +8,7 @@ export function useProfile(tokens: AuthTokens) {
 
 
   useEffect(() => {
-    axios.get('http://127.0.0.1:8000/api/auth/profile/', { headers: { Authorization: `Bearer ${tokens.access}` } })
+    axios.get(`${process.env.REACT_APP_API_URL}/api/auth/profile/`, { headers: { Authorization: `Bearer ${tokens.access}` } })
       .then(res => setProfile(res.data))
       .catch(err => console.error(err))
   }, []) //empty array = fetch once when components load
@@ -16,7 +16,7 @@ export function useProfile(tokens: AuthTokens) {
   //just want dates
   useEffect(() => {
     // also fetch moods and extract just the dates
-    axios.get('http://127.0.0.1:8000/api/moods/', {
+    axios.get(`${process.env.REACT_APP_API_URL}/api/auth/profile/`, {
       headers: { Authorization: `Bearer ${tokens.access}` }
     })
       .then(res => {

@@ -14,7 +14,7 @@ export default function MoodCheckIn({ tokens }: { tokens: AuthTokens }) {
 
   // Fetch last 7 moods
   useEffect(() => {
-    axios.get('http://127.0.0.1:8000/api/moods/', { headers })
+    axios.get(`${process.env.REACT_APP_API_URL}/api/moods/`, { headers })
       .then(res => setMoods(res.data))
       .catch(err => console.error(err))
   }, [submitted])
@@ -22,7 +22,7 @@ export default function MoodCheckIn({ tokens }: { tokens: AuthTokens }) {
   const submitMood = async () => {
     if (selected === null) return
     try {
-      await axios.post('http://127.0.0.1:8000/api/moods/', 
+      await axios.post(`${process.env.REACT_APP_API_URL}/api/moods/`, 
         { score: selected, note },
         { headers }
       )

@@ -37,7 +37,7 @@ export default function MeditationTimer({ tokens }: { tokens: AuthTokens }) {
         //
     const saveSession = async () => {
       try {
-        await axios.post('http://127.0.0.1:8000/api/sessions/',
+        await axios.post(`${process.env.REACT_APP_API_URL}/api/meditation/`,
           { duration_minutes: duration / 60 },
           {headers}
         )
